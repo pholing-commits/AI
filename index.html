@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<!--設置一個輸入框，輸入一列數字，一個數字一行，若是出現中文字，請先刪除每行的中文字再計算，將算出來的總和列在下方-->
+    <h2>數字總和計算器</h2>
+    <textarea id="numberInput" rows="10" cols="30" placeholder="請輸入數字，每行一個"></textarea><br>
+    <button onclick="calculateSum()">計算總和</button>
+    <h3>總和: <span id="result">0</span></h3>
+
+    <script>
+        function calculateSum() {
+            const input = document.getElementById('numberInput').value;
+            const lines = input.split('\n');
+            let sum = 0;
+
+            for (let line of lines) {
+                // 移除非數字字元
+                const cleanedLine = line.replace(/[^\d.-]/g, '');
+                const number = parseFloat(cleanedLine);
+                if (!isNaN(number)) {
+                    sum += number;
+                }
+            }
+
+            document.getElementById('result').innerText = sum;
+        }
+    </script>
+    
+
+<!--設置清除按鈕，按下後清除輸入框與結果-->
+    <button onclick="clearInput()">清除</button>
+
+    <script>
+        function clearInput() {
+            document.getElementById('numberInput').value = '';
+            document.getElementById('result').innerText = '0';
+            document.getElementById('conversionResult').innerText = '0';
+        }
+    </script>
+
+<!--設置兩個按鈕，換成台幣與換成日幣，根據上面算出來的數字，前者除以5，後者*5，按下按鈕顯示計算後結果-->
+    <h2>貨幣轉換器</h2>
+    <button onclick="convertToTWD()">換成台幣</button>
+    <button onclick="convertToJPY()">換成日幣</button>
+    <h3>轉換結果: <span id="conversionResult">0</span></h3>
+
+    <script>
+        function convertToTWD() {
+            const sum = parseFloat(document.getElementById('result').innerText);
+            const converted = sum / 5;
+            document.getElementById('conversionResult').innerText = converted.toFixed(2) + ' TWD';
+        }   
+        function convertToJPY() {
+            const sum = parseFloat(document.getElementById('result').innerText);
+            const converted = sum * 5;
+            document.getElementById('conversionResult').innerText = converted.toFixed(2) + ' JPY';
+        }
+    </script>
+
+
+</body>
+</html>
